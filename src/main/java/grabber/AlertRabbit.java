@@ -15,10 +15,10 @@ import static org.quartz.SimpleScheduleBuilder.*;
 public class AlertRabbit {
 
     private static int interval = 0;
-    private static final File way = new File("./src/main/resources/rabbit.properties");
+    private static final File WAY = new File("./src/main/resources/rabbit.properties");
 
     public static void main(String[] args) {
-        interval = readIntervalFile(way);
+        interval = readIntervalFile(WAY);
         if (interval <= 0) {
             throw new IllegalArgumentException();
         }
