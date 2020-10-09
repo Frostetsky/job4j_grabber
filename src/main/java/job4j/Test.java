@@ -1,4 +1,4 @@
-package job4j_grabber;
+package job4j;
 
 public class Test {
     public static void main(String[] args) {
