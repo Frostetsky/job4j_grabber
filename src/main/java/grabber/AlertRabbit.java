@@ -3,56 +3,60 @@ package grabber;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import static org.quartz.JobBuilder.*;
 import static org.quartz.TriggerBuilder.*;
 import static org.quartz.SimpleScheduleBuilder.*;
 
 public class AlertRabbit {
-
-    private static int interval = 0;
-    private static final File WAY = new File("./src/main/resources/rabbit.properties");
-
     public static void main(String[] args) {
-        interval = readIntervalFile(WAY);
-        if (interval <= 0) {
-            throw new IllegalArgumentException();
-        }
-        try {
+        Config config = new Config("rabbit.properties");
+        try (Connection connection = initConnection(config)) {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
-            JobDetail job = newJob(Rabbit.class).build();
+            JobDataMap dataMap = new JobDataMap();
+            dataMap.put("connection", connection);
+            JobDetail job = newJob(Rabbit.class)
+                    .usingJobData(dataMap)
+                    .build();
+            int constant = Integer.parseInt(config.get("rabbit.interval"));
             SimpleScheduleBuilder times = simpleSchedule()
-                    .withIntervalInSeconds(interval)
+                    .withIntervalInSeconds(constant)
                     .repeatForever();
             Trigger trigger = newTrigger()
                     .startNow()
                     .withSchedule(times)
                     .build();
             scheduler.scheduleJob(job, trigger);
-        } catch (SchedulerException se) {
+            Thread.sleep(10000);
+            scheduler.shutdown();
+        } catch (Exception se) {
             se.printStackTrace();
         }
     }
 
-    public static int readIntervalFile(File file) {
-        int result = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String parameter = reader.readLine().split("=")[1];
-            result = Integer.parseInt(parameter);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+    private static Connection initConnection(Config configManager) {
+        Connection connection = null;
+        try {
+            Class.forName(configManager.get("driver-class-name"));
+            connection = DriverManager.getConnection(
+                    configManager.get("url"),
+                    configManager.get("login"),
+                    configManager.get("password")
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return result;
+        return connection;
     }
 
     public static class Rabbit implements Job {
         @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
+        public void execute(JobExecutionContext context) {
+            Connection connection = (Connection) context.getJobDetail().getJobDataMap().get("connection");
             System.out.println("Rabbit runs here ...");
         }
     }
