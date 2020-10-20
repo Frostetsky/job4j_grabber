@@ -6,12 +6,14 @@ import java.util.Objects;
 public class Post {
     private String id;
     private String link;
+    private String textLink;
     private String description;
     private Timestamp createDate;
 
-    public Post(String id, String link, String description, Timestamp createDate) {
+    public Post(String id, String link, String textLink, String description, Timestamp createDate) {
         this.id = id;
         this.link = link;
+        this.textLink = textLink;
         this.description = description;
         this.createDate = createDate;
     }
@@ -49,6 +51,14 @@ public class Post {
 
     public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
+    }
+
+    public String getTextLink() {
+        return textLink;
+    }
+
+    public void setTextLink(String textLink) {
+        this.textLink = textLink;
     }
 
     @Override
