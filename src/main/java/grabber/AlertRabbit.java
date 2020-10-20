@@ -5,7 +5,6 @@ import org.quartz.impl.StdSchedulerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
 import static org.quartz.JobBuilder.*;
 import static org.quartz.TriggerBuilder.*;
