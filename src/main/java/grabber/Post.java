@@ -1,6 +1,6 @@
 package grabber;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Post {
@@ -8,9 +8,9 @@ public class Post {
     private String link;
     private String textLink;
     private String description;
-    private Timestamp createDate;
+    private LocalDateTime createDate;
 
-    public Post(String id, String link, String textLink, String description, Timestamp createDate) {
+    public Post(String id, String link, String textLink, String description, LocalDateTime createDate) {
         this.id = id;
         this.link = link;
         this.textLink = textLink;
@@ -45,11 +45,11 @@ public class Post {
         this.description = description;
     }
 
-    public Timestamp getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -73,5 +73,16 @@ public class Post {
     @Override
     public int hashCode() {
         return Objects.hash(id, link);
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id='" + id + '\'' +
+                ", link='" + link + '\'' +
+                ", textLink='" + textLink + '\'' +
+                ", description='" + description + '\'' +
+                ", createDate=" + createDate +
+                '}';
     }
 }
