@@ -12,7 +12,7 @@ import java.util.Properties;
 public class PsqlStore implements Store, AutoCloseable {
 
     private Connection cn;
-    private final String path = "./src/main/resources/rabbit.properties";
+    private final String path = "./src/main/resources/app.properties";
 
     public PsqlStore(Properties cfg) {
         try {
