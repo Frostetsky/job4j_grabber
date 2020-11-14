@@ -63,11 +63,14 @@ public class Post {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Post post = (Post) o;
-        return Objects.equals(id, post.id) &&
-                Objects.equals(link, post.link);
+        return Objects.equals(id, post.id) && Objects.equals(link, post.link);
     }
 
     @Override
@@ -77,12 +80,27 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" +
-                "id='" + id + '\'' +
-                ", link='" + link + '\'' +
-                ", textLink='" + textLink + '\'' +
-                ", description='" + description + '\'' +
-                ", createDate=" + createDate +
+        return "Post{"
+                +
+                "id='"
+                + id
+                + '\''
+                +
+                ", link='"
+                + link
+                + '\''
+                +
+                ", textLink='"
+                + textLink
+                + '\''
+                +
+                ", description='"
+                + description
+                + '\''
+                +
+                ", createDate="
+                + createDate
+                +
                 '}';
     }
 }

@@ -72,15 +72,15 @@ public class Grabber implements Grab {
     }
 
     public static class GrabJob implements Job {
-        private String URL = "https://www.sql.ru/forum/job-offers";
-        private final int PAGES = 3;
+        private String url = "https://www.sql.ru/forum/job-offers";
+        private final int pages = 3;
 
         @Override
         public void execute(JobExecutionContext context) {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
-            store.loading(parse, URL, PAGES);
+            store.loading(parse, url, pages);
         }
     }
 

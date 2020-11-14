@@ -28,6 +28,10 @@ public class PsqlStore implements Store, AutoCloseable {
         }
     }
 
+    public PsqlStore(Connection cn) {
+        this.cn = cn;
+    }
+
     @Override
     public void loading(Parse parse, String url, int pages) {
         List<Post> posts = parse.list(url, pages);

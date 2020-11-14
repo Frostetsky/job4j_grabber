@@ -31,11 +31,10 @@ public class ParseDate {
     }
     public LocalDateTime parseMethod() {
         LocalDateTime fulldate;
-        String[] dat = dateAndTime.split(", "); {
-            int[] date = dateMethod(dat[0]);
-            int[] time = timeMethod(dat[1]);
-            fulldate = LocalDateTime.of(date[2], date[1], date[0], time[0], time[1]);
-        }
+        String[] dat = dateAndTime.split(", ");
+        int[] date = dateMethod(dat[0]);
+        int[] time = timeMethod(dat[1]);
+        fulldate = LocalDateTime.of(date[2], date[1], date[0], time[0], time[1]);
         return fulldate;
     }
 
@@ -77,7 +76,7 @@ public class ParseDate {
     private int[] timeMethod(String time) {
         int[] result = new int[2];
         String[] times = time.split(":"); // [0] hours === [1] minutes
-        LocalTime timeLC = LocalTime.of(Integer.parseInt(times[0]),Integer.parseInt(times[1]));
+        LocalTime timeLC = LocalTime.of(Integer.parseInt(times[0]), Integer.parseInt(times[1]));
         result[0] = timeLC.getHour();
         result[1] = timeLC.getMinute();
         return result;

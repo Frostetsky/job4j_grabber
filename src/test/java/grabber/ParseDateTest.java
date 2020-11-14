@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 public class ParseDateTest {
     @Test
-    public void ParsingDate1() {
+    public void parsingDateBase() {
         ParseDate date = new ParseDate("25 апр 15, 13:27");
         LocalDateTime dateour = date.parseMethod();
         assertThat(dateour.getYear(), is(2015));
@@ -22,7 +22,7 @@ public class ParseDateTest {
     }
 
     @Test@Ignore
-    public void ParsingDate2() {
+    public void parsingDateToday() {
         ParseDate date = new ParseDate("сегодня, 05:02");
         LocalDateTime dateour = date.parseMethod();
         assertThat(dateour.getYear(), is(2020));
@@ -33,7 +33,7 @@ public class ParseDateTest {
     }
 
     @Test@Ignore
-    public void ParsingDate3() {
+    public void parsingDateYesterday() {
         ParseDate date = new ParseDate("вчера, 11:05");
         LocalDateTime dateour = date.parseMethod();
         assertThat(dateour.getYear(), is(2020));
@@ -44,7 +44,7 @@ public class ParseDateTest {
     }
 
     @Test
-    public void ParsingDate4() {
+    public void parsingDateDateOther() {
         ParseDate date = new ParseDate("31 дек 19, 15:41");
         LocalDateTime dateour = date.parseMethod();
         assertThat(dateour.getYear(), is(2019));
@@ -55,7 +55,7 @@ public class ParseDateTest {
     }
 
     @Test(expected = DateTimeException.class)
-    public void IncorrectData() {
+    public void incorrectData() {
         ParseDate date = new ParseDate("45 дек 19, 25:41");
         LocalDateTime dateour = date.parseMethod();
         System.out.println(dateour);
