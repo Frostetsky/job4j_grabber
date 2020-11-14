@@ -11,6 +11,12 @@ sudo: false
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
+services:
+  - postgresql
+
+before_install:
+  - psql -c 'create database grabber;' -U postgres
+
 # Отправлять уведомление на почту nesterenko-nikita@bk.ru если сборка упала
 notifications:
   email:
