@@ -1,17 +1,18 @@
 package grabber;
 
-import java.util.List;
+import java.util.Properties;
 
 public class Program {
 
-    private static String url = "https://www.sql.ru/forum/job-offers";
-    private static final int pages = 1;
+    private static String URL = "https://www.sql.ru/forum/job-offers";
+
+    private static final int PAGES = 3;
+
+    private static final Parse parse = new SqlRuParse();
 
     public static void main(String[] args) {
-        Parse parse = new SqlRuParse();
-        List<Post> post = parse.list(url, pages);
-        for (Post po : post) {
-            System.out.println(po);
-        }
+        Store store = new PsqlStore(new Properties());
+        store.loading(parse, URL, PAGES);
+        // TODO - testing
     }
 }
