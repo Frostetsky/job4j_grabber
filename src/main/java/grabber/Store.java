@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 public interface Store {
 
-    void loading(Parse parse, String url, int pages);
+    void saveAll(List<Post> posts);
 
     void save(Post post);
 

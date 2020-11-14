@@ -10,8 +10,6 @@ import java.util.*;
 
 public class SqlRuParse implements Parse {
 
-    private Set<Integer> uniqueID = new HashSet<>();
-
     @Override
     public List<Post> list(String link, int pages) {
         List<Post> posts = new ArrayList<>();

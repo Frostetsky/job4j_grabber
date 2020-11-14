@@ -3,6 +3,7 @@ package grabber;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import java.util.List;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -80,7 +81,8 @@ public class Grabber implements Grab {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
-            store.loading(parse, url, pages);
+            List<Post> posts = parse.list(url, pages);
+            store.saveAll(posts);
         }
     }
 

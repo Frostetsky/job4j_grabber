@@ -12,18 +12,15 @@ import java.util.Properties;
 public class PsqlStore implements Store, AutoCloseable {
 
     private Connection cn;
-    private final String path = "./src/main/resources/app.properties";
 
     public PsqlStore(Properties cfg) {
         try {
-            FileInputStream in = new FileInputStream(this.path);
-            cfg.load(in);
             Class.forName(cfg.getProperty("jdbc.driver"));
             cn = DriverManager.getConnection(
                     cfg.getProperty("url"),
                     cfg.getProperty("login"),
                     cfg.getProperty("password"));
-        } catch (IOException | SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -33,8 +30,7 @@ public class PsqlStore implements Store, AutoCloseable {
     }
 
     @Override
-    public void loading(Parse parse, String url, int pages) {
-        List<Post> posts = parse.list(url, pages);
+    public void saveAll(List<Post> posts) {
         for (Post post : posts) {
             save(post);
         }
@@ -42,9 +38,8 @@ public class PsqlStore implements Store, AutoCloseable {
 
     @Override
     public void save(Post post) {
-        try {
-            PreparedStatement ps = cn.prepareStatement(
-                    "INSERT INTO post(id, name, description, link, created_date) VALUES (?, ?, ?, ?, ?)");
+        try (PreparedStatement ps = cn.prepareStatement(
+                    "INSERT INTO post(id, name, description, link, created_date) VALUES (?, ?, ?, ?, ?)")) {
             ps.setInt(1, Integer.parseInt(post.getId()));
             ps.setString(2, post.getTextLink());
             ps.setString(3, post.getDescription());
@@ -59,9 +54,8 @@ public class PsqlStore implements Store, AutoCloseable {
     @Override
     public List<Post> getAll() {
         List<Post> posts = new ArrayList<>();
-        try {
-            Statement st = cn.createStatement();
-            ResultSet set = st.executeQuery("SELECT * FROM post");
+        try (Statement st = cn.createStatement();
+            ResultSet set = st.executeQuery("SELECT * FROM post")) {
             while (set.next()) {
                 Post post = new Post();
                 post.setId(set.getString("id"));
@@ -80,8 +74,7 @@ public class PsqlStore implements Store, AutoCloseable {
     @Override
     public Post findByID(String id) {
         Post post = null;
-        try {
-            PreparedStatement ps = cn.prepareStatement("SELECT * FROM post WHERE ID = ?");
+        try (PreparedStatement ps = cn.prepareStatement("SELECT * FROM post WHERE ID = ?")) {
             ps.setInt(1, Integer.parseInt(id));
             ResultSet set = ps.executeQuery();
             while (set.next()) {
