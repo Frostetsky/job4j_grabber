@@ -1,10 +1,6 @@
 package grabber;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -77,7 +73,7 @@ public class PsqlStore implements Store, AutoCloseable {
         try (PreparedStatement ps = cn.prepareStatement("SELECT * FROM post WHERE ID = ?")) {
             ps.setInt(1, Integer.parseInt(id));
             ResultSet set = ps.executeQuery();
-            while (set.next()) {
+            if (set.next()) {
                 post = new Post();
                 post.setId(id);
                 post.setTextLink(set.getString("name"));
